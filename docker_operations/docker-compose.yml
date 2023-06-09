@@ -1,0 +1,27 @@
+version: "1.0"
+
+services:
+  frontend:
+    # container_name: frontend # (default:key)
+    image: "docker-compose-frontend" # image_name
+    build: ./frontend # image build source path (dockerize edilecek klasor)
+    ports: # dış/iç port numaraları
+      - 3000:3000
+      - 80:3000 # deploy edilecegi zaman browser'da direkt portsuz calismasi icin (HTTP default port 80)
+    restart: on-failure # hata anında tekrar çalıştır.
+    # Front-end'in calismasi backend'e bagimli kilinmaktadir.
+    depends_on: # önce aşağıdakileri çalıştır.
+      - backend # aşağıda tanımlandı.
+
+  backend:
+    # container_name: backend # (default:key)
+    image: "docker-compose-backend" # image_name
+    build: ./backend # image build source path (dockerize edilecek klasor)
+    ports: # dış/iç port numaraları
+      - 8000:8000
+      - 8080:8000
+    restart: on-failure # hata anında tekrar çalıştır.
+    # depends_on: # önce aşağıdakileri çalıştır.
+    #   - backend # aşağıda tanımlandı.
+    volumes: # fiziksel yollar (external:internal)
+      - $PWD/backend/db.sqlite3:/backend/db.sqlite3 # disaridaki sqlite konumu : icerideki(docker root) sqlite konumu, postgresql container disinda calisacagi icin sorun olmayacaktir ama her compose up compose down esnasinda docker root'taki dosyalar sifirlanacagi icin db'de sifirlanir, bunun onune gecmek db'yi localden path'lemek gerekir.

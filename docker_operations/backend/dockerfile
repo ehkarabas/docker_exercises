@@ -1,0 +1,21 @@
+FROM python:3.10.8-slim-bullseye
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /backend
+
+COPY . .
+
+RUN pip install -r requirements.txt
+
+CMD python manage.py runserver 0.0.0.0:8000
+# Optional:
+# EXPOSE 8000
+
+# 0.0.0.0 adresi, sunucunun her türlü IP adresinden(ag arayuzu(network interfaces)) gelen bağlantıları kabul etmeye hazır olduğunu belirtir. Bu, bir paketin içerisinde nereye yazılır veya nereden okunur, değil, sunucunun yapılandırmasını belirtir. Bir sunucunun 0.0.0.0 adresinde dinlemesi genellikle sunucu yazılımının yapılandırma veya komut satırı parametrelerinde(python manage.py runserver 0.0.0.0:8000) belirtilir. Örneğin, bir web sunucusu için, dinlemek istediğiniz IP adresini ve portu genellikle sunucunun yapılandırma dosyasında veya komut satırında belirtirsiniz.
+
+# Broadcast adresi (255.255.255.255), genellikle bir ağdaki tüm cihazlara bir mesaj yayınlamak için kullanılır. Bir cihaz bu adresi kullanarak bir mesaj gönderirse, bu mesaj genellikle aynı ağdaki tüm cihazlara iletilecektir. bir cihaz (istemci) ağa ilk kez bağlandığında ve bir IP adresi talep ettiğinde, bu talep genellikle 255.255.255.255 broadcast adresine gönderilir. Bu, cihazın DHCP sunucusunun (genellikle bir router) kim olduğunu bilmediği durumlarda yararlıdır, çünkü bu şekilde talep ağdaki tüm cihazlara yayılır. 
+
+# Bir cihazın ağa bağlandığında IP adresini bilmek ve IP adresiyle iletişim kurabilmek için genellikle ağ kartında (network card) gömülü bir yazılım bulunur. Bu yazılım, IP protokolünü uygulayan ve ağ trafiğini yöneten bir ağ yığını (network stack) sağlar. IP adresi, bir cihazın ağ üzerindeki benzersiz kimliğini temsil eder. İletişim kurmak isteyen bir cihaz, genellikle bir DHCP (Dynamic Host Configuration Protocol) sunucusundan IP adresini dinamik olarak alır. DHCP sunucusu, ağa yeni bağlanan cihazlara otomatik olarak IP adresi ve diğer ağ yapılandırma bilgilerini atar. Ağ kartı, DHCP sunucusundan IP adresini alır almaz, IP adresini ve diğer ağ yapılandırma bilgilerini gomulu yazılımda (firmware) saklar. Bu bilgiler daha sonra cihaz ağ üzerinde iletişim kurmak istediğinde kullanılır. İstek göndermek için cihaz, ağ kartındaki yazılımı kullanarak belirtilen IP adresine yönlendirilen veri paketlerini oluşturur ve gönderir.
+
+# ISP'ler (Internet Service Provider), genellikle müşterilerine IP adresi atamak için DHCP (Dynamic Host Configuration Protocol) kullanırlar. DHCP, ağdaki cihazlara IP adresi, ağ geçidi, DNS sunucusu ve diğer ağ yapılandırma bilgilerini otomatik olarak atayan bir protokoldür ISP'ler, genellikle dinamik IP adresleri sağlar. Bu, her bağlantıda müşteriye farklı bir IP adresi atanabileceği anlamına gelir. Dinamik IP adresi, bir müşterinin her oturumunda veya bağlantıda değişebilir. Bu, IP adreslerini daha verimli bir şekilde kullanmalarını sağlar, çünkü aynı IP adresi, bir müşteri bağlantısı kesildiğinde başka bir müşteriye atanabilir.Bununla birlikte, bazı ISP'ler statik IP adresi de sağlayabilir. Statik IP adresi, bir müşteriye kalıcı olarak atanır ve bağlantıları kesildiğinde değişmez. Statik IP adresi genellikle sunucular, ağa erişimi uzaktan yönetmek için kullanılan cihazlar veya özel ağ gereksinimleri olan müşteriler için tercih edilir. Sonuç olarak, ISP'ler genellikle DHCP kullanarak müşterilerine IP adresi atarlar, ancak isteğe bağlı olarak statik IP adresi de sunabilirler.
